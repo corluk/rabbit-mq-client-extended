@@ -1,8 +1,8 @@
 {
-  "name": "rabbitmq_node1",
+  "name": "rabbitmq-client-extended",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:erdalemlak/rabbitmq_node1.git",
+  "repository": "git@github.com:corluk/rabbit-mq-client-extended.git",
   "author": "corluk <corluk@hotmail.com>",
   "license": "MIT",
   "dependencies": {
