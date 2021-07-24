@@ -1,0 +1,23 @@
+{
+  "name": "rabbitmq_node1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:erdalemlak/rabbitmq_node1.git",
+  "author": "corluk <corluk@hotmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.8",
+    "amqplib": "^0.8.0",
+    "chai": "^4.3.4",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.31.0",
+    "esm": "^3.2.25",
+    "jest": "^27.0.6",
+    "nodemon": "^2.0.12",
+    "uuid": "^8.3.2"
+  },
+  "scripts" :{
+    "con2" : "node_modules/.bin/nodemon -r esm test/helloworld/consumer2.js"
+  }
+}
