@@ -6,12 +6,12 @@ export const simpleConsumer  =async (channel,options)=>{
     const q = await channel.assertQueue(options.queue,options) 
     console.log(q)
 
-    return (onMessage,options)=>{
+    return async (onMessage,options)=>{
         console.log(q.queue)
         console.log(onMessage)
         console.log(options)
         options = options || {}
-        return channel.consume(q.queue,onMessage,options)
+        return await channel.consume(q.queue,onMessage,options)
     }
 
 
