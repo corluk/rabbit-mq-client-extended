@@ -1,6 +1,6 @@
 {
   "name": "rabbitmq-client-extended",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "repository": "git@github.com:corluk/rabbit-mq-client-extended.git",
   "author": "corluk <corluk@hotmail.com>",
