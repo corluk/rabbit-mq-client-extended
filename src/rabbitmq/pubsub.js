@@ -10,9 +10,7 @@ const setup = (config,defaultConfig)=>{
         config.rabbitmq_uri = process.env.RABBITMQ_URI
     }
     
-    if(!config.queue){
-        config.queue = "DEFAULT_QUEUE"
-    }
+     
     if(!config.serializer){
         config.serializer = (msg)=> JSON.stringify(msg)
     }
@@ -21,32 +19,33 @@ const setup = (config,defaultConfig)=>{
     }
     return config
 }
-export const eventEmitter = new EventEmitter() 
 
-export const pub =   async  (config={})=>{
+export default (config)=>{ 
+const eventEmitter = new EventEmitter() 
+
+const pub =   async  (msg,queue,options={})=>{
 
          
-        config = setup(config,{autoDisconnect:true })
-        console.log(config)
-        return async (msg)=>{
-            
+        config = setup(config,{autoDisconnect:true })   
         const {channel,disconnect} = await Channel(config.rabbitmq_uri)
-          const producer=   await simpleProducer(channel,{
-            queue: config.queue,  
-            durable:true})
-            eventEmitter.emit("pub-pre-publish",msg,channel,disconnect) 
-            const isSent = await producer(config.serializer(msg)) 
-            eventEmitter.emit("pub-post-publish",msg,isSent,channel,disconnect)
-            if(config.autoDisconnect==true){
+
+        const producer=   await simpleProducer(channel,{...{
+            queue: queue,  
+            durable:true},...{options}
+            })
+        
+        eventEmitter.emit("pub-pre-publish", msg,channel) 
+        const isSent = await producer(config.serializer(msg)) 
+        eventEmitter.emit("pub-post-publish", msg,isSent,channel)
+        if(config.autoDisconnect==true){
                 disconnect(2)
             }
-            //
-            //eventEmitter.emit("after-pub-disconnect")
-        }
+             
+         
         
 }   
 
-export const sub = async (config={  })=>{
+const sub = async (queue,options={})=>{
 
      
 
@@ -56,10 +55,10 @@ export const sub = async (config={  })=>{
     
    
 
-        const consumer = await simpleConsumer(channel,{
-                queue: config.queue,
+        const consumer = await simpleConsumer(channel,{...{
+                queue: queue,
                 durable : true 
-            })
+            },...{options}})
         const onMessage = (msg)=>{
             const msg_deserialized = config.deserializer(msg.content)
             if(config.ack==true){
@@ -78,6 +77,7 @@ export const sub = async (config={  })=>{
    
 
 
-}   
-
-export default eventEmitter
+}
+        return  {EventEmitter:eventEmitter,Pub:pub,Sub:sub}  
+}
+ 
