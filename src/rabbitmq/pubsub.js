@@ -9,7 +9,9 @@ const setup = (config,defaultConfig)=>{
     if(!config.rabbitmq_uri){
         config.rabbitmq_uri = process.env.RABBITMQ_URI
     }
-    
+    if(config.ack){
+        config.ack = true 
+    }
      
     if(!config.serializer){
         config.serializer = (msg)=> JSON.stringify(msg)
