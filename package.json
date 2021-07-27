@@ -6,24 +6,20 @@
   "author": "corluk <corluk@hotmail.com>",
   "license": "MIT",
   "dependencies": {
-    
     "amqplib": "^0.8.0",
-    
     "dotenv": "^10.0.0"
-   
   },
-  "devDependencies" : {
+  "devDependencies": {
     "@babel/core": "^7.14.8",
     "@babel/preset-env": "^7.14.8",
+    "chai": "^4.3.4",
     "eslint": "^7.31.0",
     "esm": "^3.2.25",
     "jest": "^27.0.6",
     "nodemon": "^2.0.12",
-    "uuid": "^8.3.2",
-    "chai": "^4.3.4"
-
+    "uuid": "^8.3.2"
   },
-  "scripts" :{
-    "con2" : "node_modules/.bin/nodemon -r esm test/helloworld/consumer2.js"
+  "scripts": {
+    "con2": "node_modules/.bin/nodemon -r esm test/helloworld/consumer2.js"
   }
 }

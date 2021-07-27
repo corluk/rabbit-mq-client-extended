@@ -6,10 +6,11 @@ import { EventEmitter } from "events";
 const setup = (config,defaultConfig)=>{
 
     config = {...defaultConfig,...config} 
-    if(!config.rabbitmq_uri){
-        config.rabbitmq_uri = process.env.RABBITMQ_URI
+    
+    if(!config.uri){
+        config.uri = process.env.RABBITMQ_URI
     }
-    if(config.ack){
+    if(!config.ack){
         config.ack = true 
     }
      
@@ -25,14 +26,14 @@ const setup = (config,defaultConfig)=>{
 export default (config)=>{ 
 const eventEmitter = new EventEmitter() 
 
-const pub =   async  (msg,queue,options={})=>{
+const pub =   async  (msg,options={})=>{
 
          
         config = setup(config,{autoDisconnect:true })   
         const {channel,disconnect} = await Channel(config.rabbitmq_uri)
 
         const producer=   await simpleProducer(channel,{...{
-            queue: queue,  
+            queue: config.queue,  
             durable:true},...{options}
             })
         
@@ -47,7 +48,7 @@ const pub =   async  (msg,queue,options={})=>{
         
 }   
 
-const sub = async (queue,options={})=>{
+const sub = async (options={})=>{
 
      
 
@@ -58,7 +59,7 @@ const sub = async (queue,options={})=>{
    
 
         const consumer = await simpleConsumer(channel,{...{
-                queue: queue,
+                queue: config.queue,
                 durable : true 
             },...{options}})
         const onMessage = (msg)=>{
@@ -79,7 +80,12 @@ const sub = async (queue,options={})=>{
    
 
 
-}
+    }
+
+    const auto = (options={durable:true})=>{
+
+     
+         
         return  {EventEmitter:eventEmitter,Pub:pub,Sub:sub}  
 }
  
